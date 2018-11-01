@@ -9,23 +9,23 @@ from loadBalancer import ClassicELB
 from describeELBs import findELBinASVapp
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-u","--user",help="Enter your a-eid",required=True)
+parser.add_argument("-u","--user",help="Enter your user-id",required=True)
 parser.add_argument("-r","--region",help="Enter the AWS region you want to search in",default="us-east-1")
 
 args = parser.parse_args()
-pwd = getpass.getpass('Please enter your a-eid password: ')
-#pwd = input("Please enter your a-eid password: ")
+pwd = getpass.getpass('Please enter your ID password: ')
+#pwd = input("Please enter your user-id password: ")
 #need to validate the password string.
 #
-#proxy = 'https://<a-eid>:<pwd>@entproxy.kdc.capitalone.com:8099'
-proxy = 'https://'+ args.user + ':' + pwd + '@entproxy.kdc.capitalone.com:8099'
+#proxy = 'https://<user-id>:<pwd>@entproxy.company.com:port'
+proxy = 'https://'+ args.user + ':' + pwd + '@entproxy.company.com:port'
 os.environ['https_proxy'] = proxy
 os.environ['HTTPS_PROXY'] = proxy
 os.environ['http_proxy'] = proxy
 os.environ['HTTP_PROXY'] = proxy
 
 #connection to AWS using the session in ~/.aws/*
-session = boto3.Session(profile_name='GR_GG_COF_AWS_COFI_Prod_ProdSupport')
+session = boto3.Session(profile_name='Role/Group name')
 #Testing AWS connectivity by printing one of the s3 buckets
 s3 = session.resource('s3')
 for b in s3.buckets.all():
@@ -33,8 +33,8 @@ for b in s3.buckets.all():
     break
 print ("Connected to AWS!")
 
-#Get the input from the user for what application he wants the instance details
-Application = input("Please enter the Application's ASV Tag value you are looking for: ").upper()
+#Get the input from the user for what application he/she wants the instance details
+Application = input("Please enter the Application's  Tag value you are looking for: ").upper()
 print("you have entered application as: %s" % Application)
 #Need to validate the application value.
 #
